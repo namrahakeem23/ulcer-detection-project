@@ -1,0 +1,86 @@
+#features {
+    scroll-margin-top: 80px;
+}
+
+.features {
+    background: white;
+}
+
+/* Rest of your existing features.css content remains the same */
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent, rgba(15,184,176,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+}
+
+.feature-card:hover::before { transform: translateX(100%); }
+.feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--accent-teal); }
+
+.feature-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    background: rgba(15, 184, 176, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon-wrapper {
+    background: var(--gradient-accent);
+    transform: rotateY(180deg);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: var(--accent-teal);
+    transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.feature-card h3 { font-size: 1.2rem; margin-bottom: 15px; color: var(--primary-dark); }
+.feature-card p { color: #64748b; margin-bottom: 20px; line-height: 1.6; }
+
+.feature-link {
+    color: var(--accent-teal);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.feature-link i { font-size: 0.8rem; transition: var(--transition); }
+.feature-link:hover { gap: 10px; color: var(--primary-blue); }
+.feature-link:hover i { transform: translateX(5px); }

@@ -1,0 +1,99 @@
+#about {
+    scroll-margin-top: 80px;
+}
+
+.about {
+    background: linear-gradient(135deg, var(--light-bg) 0%, #e6f3ff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Rest of your existing about.css content remains the same */
+
+.team-heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: var(--primary-dark);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin: 50px 0;
+    align-items: stretch;
+}
+
+.team-member {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-light);
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.member-image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f0f9ff, #e6f3ff);
+}
+
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: var(--transition);
+}
+
+.team-member:hover .member-image img { transform: scale(1.1); }
+
+.member-social {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    transition: var(--transition);
+}
+
+.team-member:hover .member-social { bottom: 0; }
+
+.member-social a {
+    width: 35px;
+    height: 35px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+    transition: var(--transition);
+}
+
+.member-social a:hover {
+    background: var(--accent-teal);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.team-member h4 { padding: 20px 20px 5px; font-size: 1.2rem; margin: 0; color: var(--primary-dark); }
+.member-title { padding: 0 20px; color: var(--accent-teal); font-weight: 500; font-size: 0.9rem; margin-bottom: 10px; }
+.member-bio { padding: 0 20px; color: #64748b; font-size: 0.9rem; line-height: 1.6; flex-grow: 1; }
+.member-expertise { padding: 0 20px 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+.member-expertise span { background: var(--light-bg); color: var(--primary-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
