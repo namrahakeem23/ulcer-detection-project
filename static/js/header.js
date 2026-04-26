@@ -1,12 +1,9 @@
-// Header specific functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if header is loaded
     const checkHeader = setInterval(() => {
         const header = document.querySelector('.header');
         if (header) {
             clearInterval(checkHeader);
             
-            // Mobile menu toggle
             const hamburger = document.querySelector(".hamburger");
             const navMenu = document.querySelector(".nav-menu");
             
@@ -23,15 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 });
             }
-            
-            // Header scroll effect
-            window.addEventListener("scroll", () => {
-                if (window.scrollY > 50) {
-                    header.classList.add("scrolled");
-                } else {
-                    header.classList.remove("scrolled");
-                }
-            });
         }
     }, 100);
 });

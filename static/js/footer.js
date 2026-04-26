@@ -1,3 +1,21 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const checkFooter = setInterval(() => {
+        const newsletterForm = document.getElementById('newsletterForm');
+        if (newsletterForm) {
+            clearInterval(checkFooter);
+            
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('newsletterEmail')?.value;
+                if (email) {
+                    alert(`Thank you for subscribing with: ${email}`);
+                    newsletterForm.reset();
+                }
+            });
+        }
+    }, 100);
+});
+/*
 // Footer section functionality
 document.addEventListener('DOMContentLoaded', function() {
     const checkFooter = setInterval(() => {
@@ -132,4 +150,4 @@ function showNotification(message, type) {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 300);
     }, 3000);
-}
+}  */

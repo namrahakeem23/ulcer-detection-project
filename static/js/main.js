@@ -1,43 +1,43 @@
 // Load all HTML sections dynamically
 document.addEventListener('DOMContentLoaded', function() {
-    // Load header FIRST
-    loadHeaderFirst();
     
-    function loadHeaderFirst() {
-        fetch('sections/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-                loadRemainingSections();
+    // Function to load HTML section
+    function loadSection(containerId, filePath) {
+        fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.text();
             })
-            .catch(error => console.error('Error loading header:', error));
+            .then(data => {
+                document.getElementById(containerId).innerHTML = data;
+                console.log(`✅ Loaded: ${filePath}`);
+            })
+            .catch(error => console.error(`❌ Error loading ${filePath}:`, error));
     }
+
+    // Load all sections - MAKE SURE THESE PATHS ARE CORRECT
+    loadSection('header-container', 'sections/header.html');
+    loadSection('home-container', 'sections/home.html');
+    loadSection('how-it-works-container', 'sections/how-it-works.html');
+    loadSection('features-container', 'sections/features.html');
+    loadSection('diagnosis-container', 'sections/diagnosis.html');
+    loadSection('about-container', 'sections/about.html');
+    loadSection('contact-container', 'sections/contact.html');
     
-    function loadRemainingSections() {
-        const sections = [
-            'hero', 'how-it-works', 'features', 'diagnosis', 'about', 'footer'
-        ];
-        
-        sections.forEach(section => {
-            fetch(`sections/${section}.html`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById(`${section}-container`).innerHTML = data;
-                })
-                .catch(error => console.error(`Error loading ${section}:`, error));
-        });
-        
-        // Initialize after all sections load
-        setTimeout(initAll, 500);
-    }
+    // Initialize after all sections load
+    setTimeout(() => {
+        initGlobalFunctions();
+    }, 500);
 });
 
-function initAll() {
+// Global Functions
+function initGlobalFunctions() {
     initMobileMenu();
     initHeaderScroll();
     initActiveLinks();
     initSmoothScroll();
-    initLoginSignupButtons();
 }
 
 function initMobileMenu() {
@@ -103,8 +103,6 @@ function initActiveLinks() {
             if (homeLink) homeLink.classList.add("active");
         }
     });
-    
-    window.dispatchEvent(new Event('scroll'));
 }
 
 function initSmoothScroll() {
@@ -126,40 +124,5 @@ function initSmoothScroll() {
                 });
             }
         });
-    });
-}
-
-function initLoginSignupButtons() {
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    const modal = document.getElementById('authModal');
-    const closeBtn = document.querySelector('.modal-close');
-
-    if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
-            if (modal) modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-    }
-
-    if (signupBtn) {
-        signupBtn.addEventListener('click', () => {
-            if (modal) modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            if (modal) modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-    }
-
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            if (modal) modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
     });
 }

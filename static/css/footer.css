@@ -7,21 +7,6 @@
     color: var(--white);
     padding: 60px 0 0;
     position: relative;
-    overflow: hidden;
-}
-
-/* Rest of your existing footer.css content remains the same */
-
-.footer::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 100%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    animation: rotate 30s linear infinite;
-    pointer-events: none;
 }
 
 .footer-newsletter {
@@ -31,19 +16,12 @@
     padding: 40px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: var(--transition);
 }
 
-.footer-newsletter:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
-    border-color: rgba(15, 184, 176, 0.3);
+.newsletter-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
 }
-
-.newsletter-title { font-size: 2rem; margin-bottom: 15px; color: var(--white); }
-.newsletter-text { color: rgba(255, 255, 255, 0.8); margin-bottom: 25px; }
 
 .input-group {
     display: flex;
@@ -58,34 +36,24 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50px;
-    color: var(--white);
-    font-size: 1rem;
-    transition: var(--transition);
+    color: white;
 }
 
-.input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
-.input-group input:focus {
-    outline: none;
-    border-color: var(--accent-teal);
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 20px rgba(15, 184, 176, 0.3);
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .subscribe-btn {
     padding: 15px 30px;
     border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
     background: var(--gradient-accent);
     color: var(--primary-dark);
     font-weight: 600;
-    transition: var(--transition);
 }
 
 .footer-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 40px;
     margin-bottom: 40px;
 }
@@ -99,10 +67,23 @@
     margin-bottom: 20px;
 }
 
-.footer-logo i { font-size: 2rem; color: var(--accent-teal); }
-.about-text { color: rgba(255, 255, 255, 0.8); line-height: 1.6; margin-bottom: 20px; }
+.footer-logo i {
+    font-size: 2rem;
+    color: var(--accent-teal);
+}
 
-.footer-certifications { display: flex; flex-wrap: wrap; gap: 15px; }
+.about-text {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.footer-certifications {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
 .cert-badge {
     display: inline-flex;
     align-items: center;
@@ -111,42 +92,56 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     font-size: 0.8rem;
-    cursor: help;
-    transition: var(--transition);
 }
-
-.cert-badge i { color: var(--accent-teal); }
 
 .footer-links h4, .footer-contact h4 {
     font-size: 1.2rem;
     margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
-.footer-links ul { list-style: none; }
-.footer-links li { margin-bottom: 12px; }
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
 .footer-links a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
-.footer-links a i { font-size: 0.8rem; transition: var(--transition); }
-.footer-links a:hover { color: var(--accent-teal); transform: translateX(5px); }
-.footer-links a:hover i { transform: translateX(3px); }
+.footer-links a:hover {
+    color: var(--accent-teal);
+    padding-left: 5px;
+}
 
 .contact-item {
     display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.contact-item i {
+    width: 20px;
+    color: var(--accent-teal);
+}
+
+.contact-item a, .contact-item span {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.social-icons {
+    display: flex;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
-.contact-icon {
+.social-icons a {
     width: 40px;
     height: 40px;
     background: rgba(255, 255, 255, 0.1);
@@ -154,36 +149,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: white;
     transition: var(--transition);
 }
 
-.contact-item:hover .contact-icon {
-    background: var(--accent-teal);
-    transform: scale(1.1);
-}
-
-.contact-detail { flex: 1; }
-.contact-label { display: block; font-size: 0.8rem; opacity: 0.7; margin-bottom: 4px; }
-.contact-link, .contact-address { color: var(--white); text-decoration: none; transition: var(--transition); cursor: pointer; }
-.contact-link:hover { color: var(--accent-teal); }
-
-.social-icons { display: flex; gap: 15px; margin-top: 20px; }
-.social-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    transition: var(--transition);
-}
-
-.social-icon:hover {
+.social-icons a:hover {
     background: var(--accent-teal);
     transform: translateY(-3px);
-    color: var(--primary-dark);
 }
 
 .footer-bottom {
@@ -192,31 +164,21 @@
     text-align: center;
 }
 
-.footer-legal { margin-bottom: 10px; }
-.legal-link {
+.footer-legal {
+    margin-bottom: 10px;
+}
+
+.footer-legal a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    transition: var(--transition);
+    margin: 0 10px;
 }
 
-.legal-link:hover { color: var(--accent-teal); }
-.separator { margin: 0 10px; opacity: 0.5; }
-.copyright { font-size: 0.9rem; opacity: 0.7; }
-.disclaimer { display: block; font-size: 0.8rem; margin-top: 5px; }
+.footer-legal a:hover {
+    color: var(--accent-teal);
+}
 
-.newsletter-message {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 8px;
+.copyright {
     font-size: 0.9rem;
-}
-
-.newsletter-message.success {
-    background: rgba(39, 174, 96, 0.2);
-    color: #2ecc71;
-}
-
-.newsletter-message.error {
-    background: rgba(231, 76, 60, 0.2);
-    color: #e74c3c;
+    opacity: 0.7;
 }

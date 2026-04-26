@@ -1,102 +1,10 @@
 <section id="diagnosis" class="diagnosis-section">
     <div class="container">
         <h2 class="section-title">AI Ulcer <span class="gradient-text">Diagnosis</span></h2>
-        <p class="section-subtitle">Upload a wound image for AI-powered analysis and view your results instantly.</p>
+        <p class="section-subtitle">Upload a wound image for AI-powered analysis.</p>
         
-        <div class="diagnosis-container">
-            <!-- Left Column: Upload Form -->
-            <div class="diagnosis-left">
-                <div class="upload-card">
-                    <h3><i class="fas fa-cloud-upload-alt"></i> Upload Image</h3>
-                    <p>Securely upload a clear image of the wound area for AI analysis.</p>
-                    
-                    <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon-wrapper">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <i class="fas fa-plus upload-plus"></i>
-                        </div>
-                        <p class="upload-text">Drag & Drop your image here or <span class="browse-text">browse files</span></p>
-                        <input type="file" id="fileInput" accept="image/*" hidden>
-                        <p class="file-info">Supports: JPG, PNG, DICOM (Max 50MB)</p>
-                    </div>
-                    
-                    <div class="analysis-progress" id="analysisProgress" style="display: none;">
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                        <p class="progress-text">Analyzing image... <span>0%</span></p>
-                    </div>
-                    
-                    <div class="upload-tips">
-                        <h4><i class="fas fa-lightbulb"></i> Tips for best results:</h4>
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Use good lighting</li>
-                            <li><i class="fas fa-check-circle"></i> Keep camera steady</li>
-                            <li><i class="fas fa-check-circle"></i> Ensure wound is fully visible</li>
-                            <li><i class="fas fa-check-circle"></i> Avoid shadows</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Column: Report Presentation -->
-            <div class="diagnosis-right">
-                <div class="report-card">
-                    <h3><i class="fas fa-chart-line"></i> Analysis Report</h3>
-                    
-                    <!-- Result Area -->
-                    <div id="resultArea" class="result-area" style="display: none;">
-                        <div class="result-image-preview">
-                            <img id="previewImg" src="#" alt="Uploaded Preview">
-                        </div>
-                        <div class="result-details">
-                            <div class="result-badge" id="resultBadge">AI Analysis Complete</div>
-                            <p><strong>Detection:</strong> <span id="detectionResult">--</span></p>
-                            <p><strong>Confidence Score:</strong> <span id="confidenceResult">--</span></p>
-                            
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: 0%"></div>
-                            </div>
-                            
-                            <div class="recommendation">
-                                <i class="fas fa-stethoscope"></i>
-                                <strong>Recommendation:</strong> <span id="recommendationText">Upload an image to start analysis.</span>
-                            </div>
-                            
-                            <div class="result-actions">
-                                <button class="btn btn-outline" id="downloadReportBtn" disabled>
-                                    <i class="fas fa-download"></i> Download Report
-                                </button>
-                                <button class="btn btn-primary" id="clearResultBtn">
-                                    <i class="fas fa-trash-alt"></i> Clear Results
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Empty State -->
-                    <div id="emptyState" class="empty-state">
-                        <div class="empty-icon">
-                            <i class="fas fa-microscope"></i>
-                        </div>
-                        <h4>No Analysis Yet</h4>
-                        <p>Upload an image on the left to see AI analysis results here.</p>
-                        <div class="empty-features">
-                            <span><i class="fas fa-chart-line"></i> 99.7% Accuracy</span>
-                            <span><i class="fas fa-bolt"></i> 3s Analysis</span>
-                            <span><i class="fas fa-lock"></i> Secure & Private</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Analysis History -->
-                <div class="history-card">
-                    <h4><i class="fas fa-history"></i> Recent Analyses</h4>
-                    <div id="historyList" class="history-list">
-                        <p class="no-history">No previous analyses found.</p>
-                    </div>
-                </div>
-            </div>
+        <div id="diagnosisContent">
+            <!-- Content loaded by JavaScript based on login status -->
         </div>
     </div>
 </section>
