@@ -1,5 +1,5 @@
 // This file works alongside main.js for additional login functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Modal elements
     const modal = document.getElementById('authModal');
     const loginBtn = document.getElementById('loginBtn');
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Password visibility toggle
     document.querySelectorAll('.password-toggle').forEach(toggle => {
-        toggle.addEventListener('click', function() {
+        toggle.addEventListener('click', function () {
             const input = this.previousElementSibling;
             const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
             input.setAttribute('type', type);
@@ -93,12 +93,12 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const email = document.getElementById('loginEmail')?.value || '';
             const password = document.getElementById('loginPassword')?.value || '';
-            
+
             if (!email || !password) {
                 alert('Please fill in all fields');
                 return;
             }
-            
+
             // Demo credentials
             if (email === 'demo@ulcerdetect.ai' && password === 'password123') {
                 alert('Login successful! Redirecting...');
@@ -122,27 +122,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('signupPassword')?.value || '';
             const confirmPassword = document.getElementById('confirmPassword')?.value || '';
             const terms = document.querySelector('#signupForm .checkbox-label input')?.checked || false;
-            
+
             if (!name || !email || !password || !confirmPassword) {
                 alert('Please fill in all fields');
                 return;
             }
-            
+
             if (password.length < 8) {
                 alert('Password must be at least 8 characters long');
                 return;
             }
-            
+
             if (password !== confirmPassword) {
                 alert('Passwords do not match');
                 return;
             }
-            
+
             if (!terms) {
                 alert('Please accept the Terms of Service');
                 return;
             }
-            
+
             alert('Account created successfully! Please login.');
             if (modal && loginTab && signupTab && loginForm && signupForm) {
                 modal.style.display = 'none';
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateNavbarForLoggedInUser(username) {
         const navButtons = document.querySelector('.nav-buttons');
         if (!navButtons) return;
-        
+
         navButtons.innerHTML = `
             <div class="user-menu">
                 <button class="btn btn-outline user-menu-btn">
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-        
+
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', (e) => {
@@ -197,15 +197,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 location.reload();
             });
         }
-        
+
         const userMenuBtn = document.querySelector('.user-menu-btn');
         const dropdown = document.querySelector('.user-dropdown');
-        
+
         if (userMenuBtn && dropdown) {
             userMenuBtn.addEventListener('click', () => {
                 dropdown.classList.toggle('show');
             });
-            
+
             document.addEventListener('click', (e) => {
                 if (!userMenuBtn.contains(e.target)) {
                     dropdown.classList.remove('show');

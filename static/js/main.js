@@ -1,8 +1,8 @@
 // Load all HTML sections dynamically
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Load header FIRST
     loadHeaderFirst();
-    
+
     function loadHeaderFirst() {
         fetch('sections/header.html')
             .then(response => response.text())
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Error loading header:', error));
     }
-    
+
     function loadRemainingSections() {
         const sections = [
             'hero', 'how-it-works', 'features', 'diagnosis', 'about', 'footer'
         ];
-        
+
         sections.forEach(section => {
             fetch(`sections/${section}.html`)
                 .then(response => response.text())
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => console.error(`Error loading ${section}:`, error));
         });
-        
+
         // Initialize after all sections load
         setTimeout(initAll, 500);
     }
@@ -43,13 +43,13 @@ function initAll() {
 function initMobileMenu() {
     const hamburger = document.querySelector(".hamburger");
     const navMenu = document.querySelector(".nav-menu");
-    
+
     if (hamburger && navMenu) {
         hamburger.addEventListener("click", () => {
             hamburger.classList.toggle("active");
             navMenu.classList.toggle("active");
         });
-        
+
         document.querySelectorAll(".nav-link").forEach(link => {
             link.addEventListener("click", () => {
                 hamburger.classList.remove("active");
@@ -79,12 +79,12 @@ function initActiveLinks() {
     window.addEventListener("scroll", () => {
         let current = "";
         const scrollPosition = window.scrollY + 150;
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
             const sectionId = section.getAttribute("id");
-            
+
             if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 current = sectionId;
             }
@@ -97,13 +97,13 @@ function initActiveLinks() {
                 link.classList.add("active");
             }
         });
-        
+
         if (current === "" && window.scrollY < 100) {
             const homeLink = document.querySelector('.nav-link[href="#home"]');
             if (homeLink) homeLink.classList.add("active");
         }
     });
-    
+
     window.dispatchEvent(new Event('scroll'));
 }
 
@@ -113,13 +113,13 @@ function initSmoothScroll() {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const target = document.querySelector(targetId);
             if (target) {
                 const headerOffset = 80;
                 const elementPosition = target.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
+
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
