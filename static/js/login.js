@@ -12,11 +12,7 @@ function initAuth() {
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
 
-    // Check saved login
-    if (localStorage.getItem('isLoggedIn') === 'true') {
-        const savedUser = localStorage.getItem('loggedInUser');
-        if (savedUser) updateNavbarForLoggedInUser(savedUser);
-    }
+    // Real session managed by Flask-Login via server-rendered header
 
     loginBtn?.addEventListener('click', () => {
         modal.style.display = 'block';
@@ -60,63 +56,36 @@ function initAuth() {
 
     // Login
     loginForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const username = email.split('@')[0];
-        
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('loggedInUser', username);
-        
-        showToast('Login successful!', 'success');
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            updateNavbarForLoggedInUser(username);
-            if (typeof checkLoginStatus === 'function') checkLoginStatus();
-            if (typeof initDiagnosisFeatures === 'function') initDiagnosisFeatures();
-        }, 1000);
+        // Form will submit to /login naturally
+        showToast('Processing login...', 'info');
     });
 
     // Signup
     signupForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('signupEmail').value;
-        showToast('Account created! Please login.', 'success');
-        setTimeout(() => {
-            document.getElementById('loginEmail').value = email;
-            loginTab.click();
-        }, 1500);
+        // Form will submit to /register naturally
+        showToast('Creating account...', 'info');
+    });
+
+    // Dropdown toggle for server-rendered header
+    document.addEventListener('click', (e) => {
+        const menuBtn = e.target.closest('.user-menu-btn');
+        const dropdown = document.querySelector('.user-dropdown');
+        
+        if (menuBtn) {
+            dropdown.classList.toggle('show');
+            e.stopPropagation();
+        } else if (dropdown && dropdown.classList.contains('show')) {
+            if (!e.target.closest('.user-dropdown')) {
+                dropdown.classList.remove('show');
+            }
+        }
     });
 
     function showToast(message, type) {
         const toast = document.getElementById('toast');
+        if (!toast) return;
         toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${message}`;
         toast.className = `toast ${type} show`;
         setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    function updateNavbarForLoggedInUser(username) {
-        const navButtons = document.querySelector('.nav-buttons');
-        if (!navButtons) return;
-        navButtons.innerHTML = `
-            <div class="user-menu">
-                <button class="btn btn-outline user-menu-btn">
-                    <i class="fas fa-user-circle"></i> ${username} <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="user-dropdown">
-                    <a href="#"><i class="fas fa-user"></i> Profile</a>
-                    <a href="#"><i class="fas fa-chart-line"></i> Dashboard</a>
-                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            </div>
-        `;
-        document.getElementById('logoutBtn')?.addEventListener('click', () => {
-            localStorage.clear();
-            location.reload();
-        });
-        document.querySelector('.user-menu-btn')?.addEventListener('click', () => {
-            document.querySelector('.user-dropdown').classList.toggle('show');
-        });
     }
 }

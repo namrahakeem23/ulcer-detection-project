@@ -139,3 +139,84 @@
     justify-content: center;
     margin: 30px 0;
 }
+
+/* Diagnosis Promo Styles */
+.diagnosis-content-home {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.diagnosis-promo {
+    background: white;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+}
+
+.promo-icons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 50px;
+    gap: 20px;
+}
+
+.promo-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.promo-icon-item i {
+    font-size: 2.5rem;
+    color: var(--accent-teal);
+    background: rgba(15, 184, 176, 0.1);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    transition: var(--transition);
+}
+
+.promo-icon-item:hover i {
+    transform: translateY(-5px);
+    background: var(--accent-teal);
+    color: white;
+}
+
+.promo-icon-item span {
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.promo-action {
+    text-align: center;
+    border-top: 1px solid var(--border-light);
+    padding-top: 40px;
+}
+
+.promo-action p {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.btn-lg {
+    padding: 18px 45px;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .promo-icons {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .diagnosis-promo {
+        padding: 30px 20px;
+    }
+}

@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSection('home-container', 'sections/home.html');
     loadSection('how-it-works-container', 'sections/how-it-works.html');
     loadSection('features-container', 'sections/features.html');
-    loadSection('diagnosis-container', 'sections/diagnosis.html');
     loadSection('about-container', 'sections/about.html');
     loadSection('contact-container', 'sections/contact.html');
     

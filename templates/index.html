@@ -22,9 +22,28 @@
     <link rel="stylesheet" href="static/css/about.css">
     <link rel="stylesheet" href="static/css/contact.css">
     <link rel="stylesheet" href="static/css/login.css">
-    <link rel="stylesheet" href="static\css\responsive.css">
+    <link rel="stylesheet" href="static/css/responsive.css">
 </head>
 <body>
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle"></i>
+                        {% elif category == 'danger' %}
+                            <i class="fas fa-exclamation-circle"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle"></i>
+                        {% endif %}
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
 
     <!-- Header Container -->
     <div id="header-container"></div>
@@ -37,9 +56,6 @@
 
     <!-- Features Section -->
     <div id="features-container"></div>
-
-    <!-- Diagnosis Section -->
-    <div id="diagnosis-container"></div>
 
     <!-- About Section -->
     <div id="about-container"></div>
@@ -56,19 +72,19 @@
                 <button class="auth-tab" id="signupTab">Sign Up</button>
             </div>
             
-            <form id="loginForm" class="auth-form active">
+            <form id="loginForm" class="auth-form active" action="/login" method="POST">
                 <h3>Welcome Back</h3>
                 <p>Login to access your account.</p>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                    <input type="email" name="email" id="loginEmail" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                    <input type="password" name="password" id="loginPassword" placeholder="Enter your password" required>
                 </div>
                 <div class="form-options">
-                    <label class="remember-me"><input type="checkbox"> Remember me</label>
+                    <label class="remember-me"><input type="checkbox" name="remember"> Remember me</label>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
@@ -82,27 +98,27 @@
                 </div>
             </form>
             
-            <form id="signupForm" class="auth-form">
+            <form id="signupForm" class="auth-form" action="/register" method="POST">
                 <h3>Create Account</h3>
                 <p>Join us for free.</p>
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" id="signupName" placeholder="Enter your full name">
+                    <input type="text" name="username" id="signupName" placeholder="Enter your full name" required>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="signupEmail" placeholder="Enter your email">
+                    <input type="email" name="email" id="signupEmail" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="signupPassword" placeholder="Create a password">
+                    <input type="password" name="password" id="signupPassword" placeholder="Create a password" required>
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                    <input type="password" name="confirm_password" id="confirmPassword" placeholder="Confirm your password" required>
                 </div>
                 <div class="form-group">
-                    <label class="checkbox-label"><input type="checkbox"> I agree to the Terms of Service</label>
+                    <label class="checkbox-label"><input type="checkbox" required> I agree to the Terms of Service</label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Create Account</button>
                 <div class="social-login">
@@ -122,13 +138,25 @@
     <!-- JavaScript Files -->
     <script src="static/js/main.js"></script>
     <script src="static/js/header.js"></script>
-    <script src="static/js/home.js"></script>
+    <script src="static/js/hero.js"></script>
     <script src="static/js/how-it-works.js"></script>
     <script src="static/js/features.js"></script>
-    <script src="static/js/diagnosis.js"></script>
     <script src="static/js/about.js"></script>
-    <script src="static/js/contact.js"></script>
     <script src="static/js/login.js"></script>
+    <script>
+        // Auto-hide flash messages
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateX(120%)';
+                    alert.style.transition = 'all 0.5s ease-in-out';
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 
 </html>

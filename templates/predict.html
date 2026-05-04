@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Diagnosis | UlcerDetect AI</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        .page-container {
+            padding: 120px 0 60px;
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .diagnosis-card {
+            background: white;
+            border-radius: 30px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            min-height: 600px;
+        }
+
+        .upload-section {
+            padding: 40px;
+            background: #f8fafc;
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-section {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .drop-zone {
+            border: 3px dashed #cbd5e1;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: var(--transition);
+            background: white;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .drop-zone:hover, .drop-zone.active {
+            border-color: var(--accent-teal);
+            background: rgba(15, 184, 176, 0.05);
+        }
+
+        .drop-zone i {
+            font-size: 3.5rem;
+            color: var(--accent-teal);
+            margin-bottom: 20px;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 24px;
+            background: #f8fafc;
+            border: 1px solid var(--border-light);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .status-ulcer { background: #fee2e2; color: #991b1b; }
+        .status-normal { background: #dcfce7; color: #166534; }
+        .status-avm { background: #fef3c7; color: #92400e; }
+
+        .confidence-meter {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--accent-teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 992px) {
+            .diagnosis-card { grid-template-columns: 1fr; }
+            .upload-section { border-right: none; border-bottom: 1px solid var(--border-light); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="subpage-header">
+        <nav class="navbar">
+            <a href="/" class="logo" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-microscope" style="color: var(--accent-teal); font-size: 1.8rem;"></i>
+                <h2 style="font-weight: 700; font-size: 1.5rem;">UlcerDetect <span class="gradient-text">AI</span></h2>
+            </a>
+            
+            <div class="user-menu">
+                <button class="btn btn-outline user-menu-btn">
+                    <i class="fas fa-user-circle"></i> {{ current_user.username }} <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown">
+                    <a href="/"><i class="fas fa-home"></i> Home</a>
+                    <a href="/history"><i class="fas fa-history"></i> History</a>
+                    <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <h3 style="margin-top: 20px;">AI is analyzing your image...</h3>
+        <p>This may take a few seconds</p>
+    </div>
+
+    <div class="page-container">
+        <div class="container">
+            <div class="diagnosis-card" style="{% if is_report %}grid-template-columns: 1fr; max-width: 800px; margin: 0 auto;{% endif %}">
+                {% if not is_report %}
+                <div class="upload-section">
+                    <h2 style="margin-bottom: 10px;">Upload <span class="gradient-text">Endoscopy Image</span></h2>
+                    <p style="color: #64748b; margin-bottom: 30px;">Select a high-quality JPEG or PNG image for analysis.</p>
+                    
+                    <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                        <div class="drop-zone" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop image here or <strong>browse</strong></p>
+                            <input type="file" name="file" id="fileInput" accept="image/*" style="display: none;">
+                            <img id="preview" class="preview-img">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 30px; padding: 15px;" id="submitBtn" disabled>
+                            Start AI Analysis
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+
+                <div class="result-section">
+                    {% if prediction %}
+                        <div class="result-box">
+                            <span class="status-badge status-{{ prediction.lower() }}">
+                                {{ prediction }} Detected
+                            </span>
+                            <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Analyzed Image" style="width: 100%; border-radius: 15px; margin-bottom: 20px;">
+                            
+                            <h3 style="margin-bottom: 5px;">{% if is_report %}AI Diagnostic Report{% else %}Analysis Report{% endif %}</h3>
+                            <p style="color: #64748b; font-size: 0.9rem;">Confidence Level: <strong>{{ (confidence * 100) | round(2) }}%</strong></p>
+                            
+                            <div class="confidence-meter">
+                                <div class="confidence-fill" style="width: {{ confidence * 100 }}%;"></div>
+                            </div>
+
+                            <div style="text-align: left; font-size: 0.9rem; color: var(--dark-text);">
+                                <p><strong>Recommendations:</strong></p>
+                                <ul style="margin-top: 5px; padding-left: 20px; color: #64748b;">
+                                    {% if prediction == 'Ulcer' %}
+                                        <li>Consult a gastroenterologist immediately.</li>
+                                        <li>Avoid spicy foods and caffeine.</li>
+                                    {% elif prediction == 'Normal' %}
+                                        <li>No immediate signs of ulcers found.</li>
+                                        <li>Maintain a healthy diet and lifestyle.</li>
+                                    {% else %}
+                                        <li>Further investigation may be needed.</li>
+                                    {% endif %}
+                                </ul>
+
+                                <p style="margin-top: 15px;"><strong>Top Research Papers:</strong></p>
+                                <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+                                    {% if prediction == 'Ulcer' %}
+                                        <a href="https://pubmed.ncbi.nlm.nih.gov/32822453/" target="_blank" style="color: var(--primary-blue); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-external-link-alt"></i> Deep learning for Peptic Ulcer detection</a>
+                                        <a href="https://www.nature.com/articles/s41598-021-81744-y" target="_blank" style="color: var(--primary-blue); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-external-link-alt"></i> Gastric Ulcer classification using CNN</a>
+                                    {% elif prediction == 'Normal' %}
+                                        <a href="https://www.ncbi.nlm.nih.gov/books/NBK541064/" target="_blank" style="color: var(--primary-blue); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-external-link-alt"></i> Normal Gastrointestinal Endoscopy</a>
+                                        <a href="https://pubmed.ncbi.nlm.nih.gov/28551460/" target="_blank" style="color: var(--primary-blue); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-external-link-alt"></i> Standard Endoscopic Images</a>
+                                    {% else %}
+                                        <a href="https://pubmed.ncbi.nlm.nih.gov/15541006/" target="_blank" style="color: var(--primary-blue); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-external-link-alt"></i> Vascular Malformations in GI tract</a>
+                                        <a href="https://www.sciencedirect.com/topics/medicine-and-dentistry/gastric-arteriovenous-malformation" target="_blank" style="color: var(--primary-blue); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-external-link-alt"></i> Clinical analysis of Gastric AVM</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 25px; display: flex; gap: 10px;">
+                                <button class="btn btn-outline" style="flex: 1;"><i class="fas fa-download"></i> PDF</button>
+                                {% if is_report %}
+                                    <a href="/history" class="btn btn-primary" style="flex: 1;">Back to History</a>
+                                {% else %}
+                                    <a href="/upload" class="btn btn-primary" style="flex: 1;">New Task</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div style="color: #94a3b8;">
+                            <i class="fas fa-robot" style="font-size: 5rem; margin-bottom: 20px; opacity: 0.2;"></i>
+                            <h3>Ready to Analyze</h3>
+                            <p>Results will appear here after upload</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        const submitBtn = document.getElementById('submitBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const userMenuBtn = document.querySelector('.user-menu-btn');
+        const userDropdown = document.querySelector('.user-dropdown');
+
+        userMenuBtn.addEventListener('click', () => userDropdown.classList.toggle('show'));
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    dropZone.querySelector('i').style.display = 'none';
+                    dropZone.querySelector('p').style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        uploadForm.addEventListener('submit', () => {
+            loadingOverlay.style.display = 'flex';
+        });
+
+        // Drag and drop logic
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('active'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('active'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            const event = new Event('change');
+            fileInput.dispatchEvent(event);
+        }
+    </script>
+</body>
+</html>
