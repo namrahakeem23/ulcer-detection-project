@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Ulcer Detection System | MedTech AI</title>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Global CSS -->
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/header.css">
@@ -24,24 +25,25 @@
     <link rel="stylesheet" href="static/css/login.css">
     <link rel="stylesheet" href="static/css/responsive.css">
 </head>
+
 <body>
     <!-- Flash Messages -->
     <div class="flash-messages">
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {% if category == 'success' %}
-                            <i class="fas fa-check-circle"></i>
-                        {% elif category == 'danger' %}
-                            <i class="fas fa-exclamation-circle"></i>
-                        {% else %}
-                            <i class="fas fa-info-circle"></i>
-                        {% endif %}
-                        <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {% if category == 'success' %}
+            <i class="fas fa-check-circle"></i>
+            {% elif category == 'danger' %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% else %}
+            <i class="fas fa-info-circle"></i>
             {% endif %}
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
     </div>
 
@@ -71,7 +73,7 @@
                 <button class="auth-tab active" id="loginTab">Login</button>
                 <button class="auth-tab" id="signupTab">Sign Up</button>
             </div>
-            
+
             <form id="loginForm" class="auth-form active" action="/login" method="POST">
                 <h3>Welcome Back</h3>
                 <p>Login to access your account.</p>
@@ -81,7 +83,8 @@
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" id="loginPassword" placeholder="Enter your password" required>
+                    <input type="password" name="password" id="loginPassword" placeholder="Enter your password"
+                        required>
                 </div>
                 <div class="form-options">
                     <label class="remember-me"><input type="checkbox" name="remember"> Remember me</label>
@@ -97,7 +100,7 @@
                     </div>
                 </div>
             </form>
-            
+
             <form id="signupForm" class="auth-form" action="/register" method="POST">
                 <h3>Create Account</h3>
                 <p>Join us for free.</p>
@@ -115,10 +118,12 @@
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" name="confirm_password" id="confirmPassword" placeholder="Confirm your password" required>
+                    <input type="password" name="confirm_password" id="confirmPassword"
+                        placeholder="Confirm your password" required>
                 </div>
                 <div class="form-group">
-                    <label class="checkbox-label"><input type="checkbox" required> I agree to the Terms of Service</label>
+                    <label class="checkbox-label"><input type="checkbox" required> I agree to the Terms of
+                        Service</label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Create Account</button>
                 <div class="social-login">

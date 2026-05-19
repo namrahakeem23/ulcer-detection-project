@@ -1,6 +1,6 @@
 // Load all HTML sections dynamically
-document.addEventListener('DOMContentLoaded', function() {
-    
+document.addEventListener('DOMContentLoaded', function () {
+
     // Function to load HTML section
     function loadSection(containerId, filePath) {
         fetch(filePath)
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSection('features-container', 'sections/features.html');
     loadSection('about-container', 'sections/about.html');
     loadSection('contact-container', 'sections/contact.html');
-    
+
     // Initialize after all sections load
     setTimeout(() => {
         initGlobalFunctions();
